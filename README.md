@@ -65,3 +65,5 @@ org.jeewx.api.core.util.WeiXinReqService.getInstance().doWeinxinReq(ReqType类�
   为了大家更便捷的使用jeewx-api，社区制作相关的API文档和使用手册
 
   《JeeWx-API操作手册.doc》《jeewx-api.chm》更多资料请百度jeewx在官网下载
+   ![github](http://static.oschina.net/uploads/space/2015/0322/120642_qX1q_930898.jpg "jeewx-api") 
+    ![github](http://static.oschina.net/uploads/space/2015/0322/120653_MvXb_930898.jpg "jeewx-api") 
