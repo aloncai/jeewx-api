@@ -88,10 +88,8 @@ public class JwDeliveryMoneyAPI {
 			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", json);
 			// 正常返回
 			DeliveryMoney postage = null;
-			if (result.getInt("errcode") == 0) {
-				JSONObject info = result.getJSONObject("template_info");
-				postage = (DeliveryMoney)JSONHelper.toBean(info, DeliveryMoney.class);
-			}
+			JSONObject info = result.getJSONObject("template_info");
+			postage = (DeliveryMoney)JSONHelper.toBean(info, DeliveryMoney.class);
 			return postage;
 		}
 		return null;
@@ -107,10 +105,8 @@ public class JwDeliveryMoneyAPI {
 			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "GET", "");
 			// 正常返回
 			List<DeliveryMoney> postages = null;
-			if (result.getInt("errcode") == 0) {
-				JSONArray info = result.getJSONArray("templates_info");
-				postages = JSONHelper.toList(info, DeliveryMoney.class);
-			}
+			JSONArray info = result.getJSONArray("templates_info");
+			postages = JSONHelper.toList(info, DeliveryMoney.class);
 			return postages;
 		}
 		return null;

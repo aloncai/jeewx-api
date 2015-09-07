@@ -37,9 +37,7 @@ public class JwUserAPI {
 			// 正常返回
 			Wxuser wxuser = null;
 			Object error = result.get("errcode");
-			if (error == null) {
-				wxuser = (Wxuser) JSONObject.toBean(result, Wxuser.class);
-			}
+			wxuser = (Wxuser) JSONObject.toBean(result, Wxuser.class);
 			return wxuser;
 		}
 		return null;
@@ -60,23 +58,21 @@ public class JwUserAPI {
 			Object error = result.get("errcode");
 			List<Wxuser> lstUser = null;
 			Wxuser mxuser = null;
-			if (error == null) {
-				int total = result.getInt("total");
-				int count = result.getInt("count");
-				String strNextOpenId = result.getString("next_openid");
-				JSONObject data = result.getJSONObject("data");
-				lstUser = new ArrayList<Wxuser>(total);
-				if(count > 0){
-					JSONArray lstOpenid = data.getJSONArray("openid");
-					int iSize = lstOpenid.size();
-					for (int i = 0; i < iSize; i++) {
-						String openId = lstOpenid.getString(i);
-						mxuser = getWxuser(accesstoken,openId);
-						lstUser.add(mxuser);
-					}
-					if (strNextOpenId != null) {
-						lstUser.addAll(getAllWxuser(accesstoken,strNextOpenId));
-					}
+			int total = result.getInt("total");
+			int count = result.getInt("count");
+			String strNextOpenId = result.getString("next_openid");
+			JSONObject data = result.getJSONObject("data");
+			lstUser = new ArrayList<Wxuser>(total);
+			if (count > 0) {
+				JSONArray lstOpenid = data.getJSONArray("openid");
+				int iSize = lstOpenid.size();
+				for (int i = 0; i < iSize; i++) {
+					String openId = lstOpenid.getString(i);
+					mxuser = getWxuser(accesstoken, openId);
+					lstUser.add(mxuser);
+				}
+				if (strNextOpenId != null) {
+					lstUser.addAll(getAllWxuser(accesstoken, strNextOpenId));
 				}
 			}
 			return lstUser;

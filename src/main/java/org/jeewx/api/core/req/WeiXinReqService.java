@@ -11,6 +11,7 @@ import org.jeewx.api.core.handler.WeiXinReqHandler;
 import org.jeewx.api.core.req.model.DownloadMedia;
 import org.jeewx.api.core.req.model.WeixinReqConfig;
 import org.jeewx.api.core.req.model.WeixinReqParam;
+import org.jeewx.api.core.util.WeiXinConstant;
 import org.jeewx.api.core.util.WeiXinReqUtil;
 
 /**
@@ -83,6 +84,10 @@ public class WeiXinReqService {
 	public JSONObject doWeinxinReqJson(WeixinReqParam weixinReqParam) throws WexinReqException{
 		String strResult = this.doWeinxinReq(weixinReqParam);
 		JSONObject result = JSONObject.fromObject(strResult);
+		Object error = result.get(WeiXinConstant.RETURN_ERROR_INFO_CODE);
+		if(error !=null && Integer.parseInt(error.toString())!=0){
+			throw new WexinReqException(result.toString());
+		}
 		return result;
 	}
 

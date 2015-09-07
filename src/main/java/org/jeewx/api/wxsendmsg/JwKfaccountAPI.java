@@ -128,14 +128,12 @@ public class JwKfaccountAPI {
 		JSONObject result = WeiXinReqService.getInstance().doWeinxinReqJson(kfGet);
 		Object error = result.get(WeiXinConstant.RETURN_ERROR_INFO_CODE);
 		List<WxKfaccount> lstWxKfaccount = null;
-		if(error == null){
-			JSONArray kf_list = result.getJSONArray("kf_list");
-			lstWxKfaccount = new ArrayList<WxKfaccount>();
-			WxKfaccount kfaccount = null;
-			for(int i = 0; i < kf_list.size() ; i++){
-				kfaccount = (WxKfaccount) JSONObject.toBean( kf_list.getJSONObject(i), WxKfaccount.class);
-				lstWxKfaccount.add(kfaccount);
-			}
+		JSONArray kf_list = result.getJSONArray("kf_list");
+		lstWxKfaccount = new ArrayList<WxKfaccount>();
+		WxKfaccount kfaccount = null;
+		for(int i = 0; i < kf_list.size() ; i++){
+			kfaccount = (WxKfaccount) JSONObject.toBean( kf_list.getJSONObject(i), WxKfaccount.class);
+			lstWxKfaccount.add(kfaccount);
 		}
 		return lstWxKfaccount;
 	}
@@ -179,14 +177,13 @@ public class JwKfaccountAPI {
 		JSONObject result = WeiXinReqService.getInstance().doWeinxinReqJson(kfGet);
 		Object error = result.get(WeiXinConstant.RETURN_ERROR_INFO_CODE);
 		List<WxKfaccount> lstWxKfaccount = null;
-		if(error == null){
-			JSONArray kf_list = result.getJSONArray("kf_online_list");
-			lstWxKfaccount = new ArrayList<WxKfaccount>();
-			WxKfaccount kfaccount = null;
-			for(int i = 0; i < kf_list.size() ; i++){
-				kfaccount = (WxKfaccount) JSONObject.toBean( kf_list.getJSONObject(i), WxKfaccount.class);
-				lstWxKfaccount.add(kfaccount);
-			}
+		JSONArray kf_list = result.getJSONArray("kf_online_list");
+		lstWxKfaccount = new ArrayList<WxKfaccount>();
+		WxKfaccount kfaccount = null;
+		for (int i = 0; i < kf_list.size(); i++) {
+			kfaccount = (WxKfaccount) JSONObject.toBean(
+					kf_list.getJSONObject(i), WxKfaccount.class);
+			lstWxKfaccount.add(kfaccount);
 		}
 		return lstWxKfaccount;
 	}

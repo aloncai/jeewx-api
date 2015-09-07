@@ -1,7 +1,20 @@
 package org.jeewx.api.coupon.manage.model;
 
 public class Card {
-	//卡券类型目前支持11中类型，具体参考CardConsts.CardType常量类.
+	/**
+	 * 卡券类型: 目前支持11中类型，具体参考CardConsts.CardType常量类.
+	 * 团购券：GROUPON; 
+	 * 折扣券：DISCOUNT; 
+	 * 礼品券：GIFT; 
+	 * 代金券：CASH; 
+	 * 通用券：GENERAL_COUPON; 
+	 * 会员卡：MEMBER_CARD; 
+	 * 景点门票：SCENIC_TICKET； 
+	 * 电影票：MOVIE_TICKET； 
+	 * 飞机票：BOARDING_PASS； 
+	 * 会议门票：MEETING_TICKET； 
+	 * 汽车票：BUS_TICKET;
+	 */
 	private String card_type;
 	//通用券
 	private GeneralCoupon general_coupon;

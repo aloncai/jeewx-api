@@ -59,9 +59,7 @@ public class JwAccountAPI {
 		JSONObject result = WeiXinReqService.getInstance().doWeinxinReqJson(qrcodeCreate);
 		Object error = result.get(WeiXinConstant.RETURN_ERROR_INFO_CODE);
 		WxQrcode wxQrcode = null;
-		if (error == null) {
-			wxQrcode = (WxQrcode) JSONObject.toBean(result, WxQrcode.class);
-		}
+		wxQrcode = (WxQrcode) JSONObject.toBean(result, WxQrcode.class);
 		return wxQrcode;
 	}
 

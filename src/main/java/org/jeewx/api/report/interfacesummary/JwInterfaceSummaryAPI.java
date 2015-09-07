@@ -36,14 +36,12 @@ public class JwInterfaceSummaryAPI {
 			JSONObject obj = JSONObject.fromObject(param);
 			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "GET", obj.toString());
 			// 正常返回
-				List<InterfaceSummaryHour> list = null;
-				if (result.get("errcode") == null) {
-					JSONArray info = result.getJSONArray("list");
-					list = JSONHelper.toList(info, InterfaceSummaryHour.class);
-					return list;
-				}
-			}
-			return null;
+			List<InterfaceSummaryHour> list = null;
+			JSONArray info = result.getJSONArray("list");
+			list = JSONHelper.toList(info, InterfaceSummaryHour.class);
+			return list;
+		}
+		return null;
 	}
 	
 	/**
@@ -58,14 +56,12 @@ public class JwInterfaceSummaryAPI {
 			JSONObject obj = JSONObject.fromObject(param);
 			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "GET", obj.toString());
 			// 正常返回
-				List<InterfaceSummary> list = null;
-				if (result.get("errcode") == null) {
-					JSONArray info = result.getJSONArray("list");
-					list = JSONHelper.toList(info, InterfaceSummary.class);
-					return list;
-				}
-			}
-			return null;
+			List<InterfaceSummary> list = null;
+			JSONArray info = result.getJSONArray("list");
+			list = JSONHelper.toList(info, InterfaceSummary.class);
+			return list;
+		}
+		return null;
 	}
 	
 	public static void main(String[] args) {

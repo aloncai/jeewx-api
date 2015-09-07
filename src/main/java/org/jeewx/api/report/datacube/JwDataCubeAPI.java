@@ -68,13 +68,11 @@ public class JwDataCubeAPI {
 			Object error = result.get("errcode");
 			
 			// 无错误消息时 返回数据对象
-			if (error == null) { 
-				JSONArray arrayResult = result.getJSONArray("list");
+			JSONArray arrayResult = result.getJSONArray("list");
 				// 正常返回
-				List<WxDataCubeStreamMsgInfo> msgInfoList = null;
-				msgInfoList=JSONHelper.toList(arrayResult, WxDataCubeStreamMsgInfo.class);
-				return msgInfoList;
-			} 
+			List<WxDataCubeStreamMsgInfo> msgInfoList = null;
+			msgInfoList=JSONHelper.toList(arrayResult, WxDataCubeStreamMsgInfo.class);
+			return msgInfoList;
 		}
 		return null;
 	}
@@ -103,13 +101,11 @@ public class JwDataCubeAPI {
 			Object error = result.get("errcode");
 
 			// 无错误消息时 返回数据对象
-			if (error == null) { 
-				JSONArray arrayResult = result.getJSONArray("list");
-				// 正常返回
-				List<WxDataCubeStreamMsgHourInfo> msgInfoList = null;
-				msgInfoList=JSONHelper.toList(arrayResult, WxDataCubeStreamMsgHourInfo.class);
-				return msgInfoList;
-			} 
+			JSONArray arrayResult = result.getJSONArray("list");
+			// 正常返回
+			List<WxDataCubeStreamMsgHourInfo> msgInfoList = null;
+			msgInfoList=JSONHelper.toList(arrayResult, WxDataCubeStreamMsgHourInfo.class);
+			return msgInfoList;
 		}
 		return null;
 	}
@@ -137,13 +133,11 @@ public class JwDataCubeAPI {
 			Object error = result.get("errcode");
 
 			// 无错误消息时 返回数据对象
-			if (error == null) { 
-				JSONArray arrayResult = result.getJSONArray("list");
-				// 正常返回
-				List<WxDataCubeStreamMsgWeekInfo> msgInfoList = null;
-				msgInfoList=JSONHelper.toList(arrayResult, WxDataCubeStreamMsgWeekInfo.class);
-				return msgInfoList;
-			} 
+			JSONArray arrayResult = result.getJSONArray("list");
+			// 正常返回
+			List<WxDataCubeStreamMsgWeekInfo> msgInfoList = null;
+			msgInfoList=JSONHelper.toList(arrayResult, WxDataCubeStreamMsgWeekInfo.class);
+			return msgInfoList;
 		}
 		return null;
 	}
@@ -171,13 +165,11 @@ public class JwDataCubeAPI {
 			Object error = result.get("errcode");
 
 			// 无错误消息时 返回数据对象
-			if (error == null) { 
-				JSONArray arrayResult = result.getJSONArray("list");
-				// 正常返回
-				List<WxDataCubeStreamMsgMonthInfo> msgInfoList = null;
-				msgInfoList=JSONHelper.toList(arrayResult, WxDataCubeStreamMsgMonthInfo.class);
-				return msgInfoList;
-			} 
+			JSONArray arrayResult = result.getJSONArray("list");
+			// 正常返回
+			List<WxDataCubeStreamMsgMonthInfo> msgInfoList = null;
+			msgInfoList=JSONHelper.toList(arrayResult, WxDataCubeStreamMsgMonthInfo.class);
+			return msgInfoList;
 		}
 		return null;
 	}
@@ -191,27 +183,27 @@ public class JwDataCubeAPI {
 	 */
 	public static List<WxDataCubeStreamMsgDistInfo> getWxDataCubeStreamMsgDistInfo(String accesstoken,String bDate,String eDate) throws WexinReqException {
 		if (accesstoken != null) {
-			
+
 			// 封装请求参数
 			WxDataCubeStreamMsgDistParam msgParam = new WxDataCubeStreamMsgDistParam();
 			msgParam.setAccess_token(accesstoken);
 			msgParam.setBegin_date(bDate);
 			msgParam.setEnd_date(eDate);
-			
+
 			// 调用接口
-			String requestUrl = GETUPSTREAMMSGDIST_URL.replace("ACCESS_TOKEN", accesstoken);
+			String requestUrl = GETUPSTREAMMSGDIST_URL.replace("ACCESS_TOKEN",
+					accesstoken);
 			JSONObject obj = JSONObject.fromObject(msgParam);
-			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
-			Object error = result.get("errcode");
+			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST",
+					obj.toString());
 
 			// 无错误消息时 返回数据对象
-			if (error == null) { 
-				JSONArray arrayResult = result.getJSONArray("list");
-				// 正常返回
-				List<WxDataCubeStreamMsgDistInfo> msgInfoList = null;
-				msgInfoList=JSONHelper.toList(arrayResult, WxDataCubeStreamMsgDistInfo.class);
-				return msgInfoList;
-			} 
+			JSONArray arrayResult = result.getJSONArray("list");
+			// 正常返回
+			List<WxDataCubeStreamMsgDistInfo> msgInfoList = null;
+			msgInfoList = JSONHelper.toList(arrayResult,
+					WxDataCubeStreamMsgDistInfo.class);
+			return msgInfoList;
 		}
 		return null;
 	}
@@ -240,13 +232,11 @@ public class JwDataCubeAPI {
 			Object error = result.get("errcode");
 
 			// 无错误消息时 返回数据对象
-			if (error == null) { 
-				JSONArray arrayResult = result.getJSONArray("list");
-				// 正常返回
-				List<WxDataCubeStreamMsgDistWeekInfo> msgInfoList = null;
-				msgInfoList=JSONHelper.toList(arrayResult, WxDataCubeStreamMsgDistWeekInfo.class);
-				return msgInfoList;
-			} 
+			JSONArray arrayResult = result.getJSONArray("list");
+			// 正常返回
+			List<WxDataCubeStreamMsgDistWeekInfo> msgInfoList = null;
+			msgInfoList=JSONHelper.toList(arrayResult, WxDataCubeStreamMsgDistWeekInfo.class);
+			return msgInfoList;
 		}
 		return null;
 	}
@@ -274,13 +264,11 @@ public class JwDataCubeAPI {
 			Object error = result.get("errcode");
 
 			// 无错误消息时 返回数据对象
-			if (error == null) { 
-				JSONArray arrayResult = result.getJSONArray("list");
-				// 正常返回
-				List<WxDataCubeStreamMsgDistMonthInfo> msgInfoList = null;
-				msgInfoList=JSONHelper.toList(arrayResult, WxDataCubeStreamMsgDistMonthInfo.class);
-				return msgInfoList;
-			} 
+			JSONArray arrayResult = result.getJSONArray("list");
+			// 正常返回
+			List<WxDataCubeStreamMsgDistMonthInfo> msgInfoList = null;
+			msgInfoList=JSONHelper.toList(arrayResult, WxDataCubeStreamMsgDistMonthInfo.class);
+			return msgInfoList;
 		}
 		return null;
 	}

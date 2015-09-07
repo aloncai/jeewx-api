@@ -96,9 +96,7 @@ public class JwShelfAPI {
 			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", json);
 			// 正常返回
 			ShelfRInfo shelfRInfo = null;
-			if (result.getInt("errcode") == 0) {
-				shelfRInfo = (ShelfRInfo)JSONObject.toBean(result, ShelfRInfo.class);
-			}
+			shelfRInfo = (ShelfRInfo)JSONObject.toBean(result, ShelfRInfo.class);
 			return shelfRInfo;
 		}
 		return null;
@@ -114,10 +112,8 @@ public class JwShelfAPI {
 			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", null);
 			// 正常返回
 			List<ShelfRInfo> shelfRInfos = null;
-			if (result.getInt("errcode") == 0) {
-				JSONArray info = result.getJSONArray("shelves");
-				shelfRInfos = JSONHelper.toList(info, ShelfRInfo.class);
-			}
+			JSONArray info = result.getJSONArray("shelves");
+			shelfRInfos = JSONHelper.toList(info, ShelfRInfo.class);
 			return shelfRInfos;
 		}
 		return null;

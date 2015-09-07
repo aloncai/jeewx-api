@@ -10,6 +10,7 @@ import java.util.List;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -17,10 +18,18 @@ import org.jeewx.api.core.common.WxstoreUtils;
 import org.jeewx.api.core.exception.WexinReqException;
 import org.jeewx.api.core.req.model.user.Group;
 import org.jeewx.api.core.util.WeiXinReqUtil;
+import org.jeewx.api.wxbase.wxmedia.model.WxArticlesRequest;
+import org.jeewx.api.wxbase.wxmedia.model.WxArticlesRequestByMaterial;
+import org.jeewx.api.wxbase.wxmedia.model.WxArticlesRespponseByMaterial;
+import org.jeewx.api.wxbase.wxmedia.model.WxCountResponse;
+import org.jeewx.api.wxbase.wxmedia.model.WxDescriptionRequest;
+import org.jeewx.api.wxbase.wxmedia.model.WxMediaForMaterial;
+import org.jeewx.api.wxbase.wxmedia.model.WxMediaForMaterialResponse;
+import org.jeewx.api.wxbase.wxmedia.model.WxNews;
+import org.jeewx.api.wxbase.wxmedia.model.WxUpdateArticle;
 import org.jeewx.api.wxsendmsg.model.SendMessageReport;
 import org.jeewx.api.wxsendmsg.model.SendMessageResponse;
 import org.jeewx.api.wxsendmsg.model.WxArticle;
-import org.jeewx.api.wxsendmsg.model.WxArticlesRequest;
 import org.jeewx.api.wxsendmsg.model.WxArticlesResponse;
 import org.jeewx.api.wxsendmsg.model.WxMedia;
 import org.jeewx.api.wxsendmsg.model.WxMediaResponse;
@@ -44,7 +53,7 @@ public class JwSendMessageAPI {
 	private static String message_delete_url = "https://api.weixin.qq.com/cgi-bin/message/mass/delete?access_token=ACCESS_TOKEN";
 	// 查询群发消息发送状态URL
 	private static String message_get_url = "https://api.weixin.qq.com/cgi-bin/message/mass/get?access_token=ACCESS_TOKEN";
-
+			
 	/**
 	 * 图文消息预览
 	 * 
@@ -68,10 +77,6 @@ public class JwSendMessageAPI {
 				obj.put("mpnews", mpnews);
 				JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
 				//System.out.println("微信返回的结果：" + result.toString());
-				if (result.getInt("errcode") != 0) {
-					logger.error("图文消息预览失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-					throw new Exception("图文消息预览失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-				}
 			} catch (Exception e) {
 
 				throw new WexinReqException(e);
@@ -103,10 +108,6 @@ public class JwSendMessageAPI {
 				JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
 				//System.out.println("微信返回的结果：" + result.toString());
 				ret = result.toString();
-				if (result.getInt("errcode") != 0) {
-					logger.error("文本消息预览失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-					throw new Exception("文本消息预览失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-				}
 			} catch (Exception e) {
 
 				throw new WexinReqException(e);
@@ -188,12 +189,7 @@ public class JwSendMessageAPI {
 				obj.put("msgtype", "mpnews");
 				JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
 				//System.out.println("微信返回的结果：" + result.toString());
-				if (result.getInt("errcode") != 0) {
-					logger.error("图文消息发送失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-					throw new Exception("图文消息发送失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-				} else {
-					response = (SendMessageResponse) JSONObject.toBean(result, SendMessageResponse.class);
-				}
+				response = (SendMessageResponse) JSONObject.toBean(result, SendMessageResponse.class);
 			} catch (Exception e) {
 
 				throw new WexinReqException(e);
@@ -241,12 +237,7 @@ public class JwSendMessageAPI {
 
 				JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
 				//System.out.println("微信返回的结果：" + result.toString());
-				if (result.getInt("errcode") != 0) {
-					logger.error("文本消息群发失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-					throw new Exception("文本消息群发失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-				} else {
-					response = (SendMessageResponse) JSONObject.toBean(result, SendMessageResponse.class);
-				}
+				response = (SendMessageResponse) JSONObject.toBean(result, SendMessageResponse.class);
 			} catch (Exception e) {
 
 				throw new WexinReqException(e);
@@ -297,12 +288,7 @@ public class JwSendMessageAPI {
 
 				JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
 				//System.out.println("微信返回的结果：" + result.toString());
-				if (result.getInt("errcode") != 0) {
-					logger.error("群发失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-					throw new Exception("群发失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-				} else {
-					response = (SendMessageResponse) JSONObject.toBean(result, SendMessageResponse.class);
-				}
+				response = (SendMessageResponse) JSONObject.toBean(result, SendMessageResponse.class);
 			} catch (Exception e) {
 
 				throw new WexinReqException(e);
@@ -345,12 +331,7 @@ public class JwSendMessageAPI {
 				obj.put("msgtype", "mpnews");
 				JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
 				//System.out.println("微信返回的结果：" + result.toString());
-				if (result.getInt("errcode") != 0) {
-					logger.error("图文消息发送失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-					throw new Exception("图文消息发送失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-				} else {
-					response = (SendMessageResponse) JSONObject.toBean(result, SendMessageResponse.class);
-				}
+				response = (SendMessageResponse) JSONObject.toBean(result, SendMessageResponse.class);
 			} catch (Exception e) {
 
 				throw new WexinReqException(e);
@@ -395,12 +376,7 @@ public class JwSendMessageAPI {
 
 				JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
 				//System.out.println("微信返回的结果：" + result.toString());
-				if (result.getInt("errcode") != 0) {
-					logger.error("文本消息群发失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-					throw new Exception("文本消息群发失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-				} else {
-					response = (SendMessageResponse) JSONObject.toBean(result, SendMessageResponse.class);
-				}
+				response = (SendMessageResponse) JSONObject.toBean(result, SendMessageResponse.class);
 			} catch (Exception e) {
 
 				throw new WexinReqException(e);
@@ -447,12 +423,7 @@ public class JwSendMessageAPI {
 
 				JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
 				//System.out.println("微信返回的结果：" + result.toString());
-				if (result.getInt("errcode") != 0) {
-					logger.error("群发失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-					throw new Exception("群发失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-				} else {
-					response = (SendMessageResponse) JSONObject.toBean(result, SendMessageResponse.class);
-				}
+				response = (SendMessageResponse) JSONObject.toBean(result, SendMessageResponse.class);
 			} catch (Exception e) {
 
 				throw new WexinReqException(e);
@@ -487,12 +458,7 @@ public class JwSendMessageAPI {
 
 				JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
 				//System.out.println("微信返回的结果：" + result.toString());
-				if (result.getInt("errcode") != 0) {
-					logger.error("删除群发失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-					throw new Exception("删除群发失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
-				} else {
-					response = result.toString();
-				}
+				response = result.toString();
 			} catch (Exception e) {
 
 				throw new WexinReqException(e);
@@ -606,6 +572,10 @@ public class JwSendMessageAPI {
 		return response.getMedia_id();
 
 	}
+	
+	
+	
+	
 
 	public static String getMediaId(String accesstoken, List<WxArticle> wxArticles) throws WexinReqException {
 
@@ -615,7 +585,7 @@ public class JwSendMessageAPI {
 		}
 		return response.getMedia_id();
 	}
-
+	
 	/**
 	 * 上传图文消息素材
 	 * 
@@ -667,6 +637,8 @@ public class JwSendMessageAPI {
 
 		return wxArticlesResponse;
 	}
+	
+	
 
 	/**
 	 * 获取文件上传文件的media_id
@@ -718,6 +690,8 @@ public class JwSendMessageAPI {
 		}
 		return mediaResource;
 	}
+	
+	
 
 	public static void main(String[] args) throws WexinReqException {
 		/*

@@ -5,14 +5,20 @@ import java.util.List;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.util.JSONUtils;
 
 import org.jeewx.api.core.exception.WexinReqException;
 import org.jeewx.api.core.req.WeiXinReqService;
+import org.jeewx.api.core.req.model.menu.MenuConfigureGet;
 import org.jeewx.api.core.req.model.menu.MenuCreate;
 import org.jeewx.api.core.req.model.menu.MenuDelete;
 import org.jeewx.api.core.req.model.menu.MenuGet;
 import org.jeewx.api.core.req.model.menu.WeixinButton;
+import org.jeewx.api.core.req.model.menu.config.CustomWeixinButtonConfig;
+import org.jeewx.api.core.req.model.menu.config.WeixinButtonExtend;
 import org.jeewx.api.core.util.WeiXinConstant;
+import org.jeewx.api.extend.CustomJsonConfig;
+import org.jeewx.api.wxsendmsg.model.WxArticleConfig;
 
 /**
  * 微信--menu
@@ -61,27 +67,27 @@ public class JwMenuAPI {
 		JSONObject result = WeiXinReqService.getInstance().doWeinxinReqJson(g);
 		Object error = result.get(WeiXinConstant.RETURN_ERROR_INFO_CODE);
 		List<WeixinButton> lstButton = null;
-		if(error == null){
-			JSONObject menu = result.getJSONObject("menu");
-			JSONArray buttons = menu.getJSONArray("button");
-			JSONArray subButtons = null;
-			lstButton = new ArrayList<WeixinButton>();
-			WeixinButton btn = null;
-			WeixinButton subBtn = null;
-			List<WeixinButton> lstSubButton = null;
-			for(int i = 0; i < buttons.size() ; i++){
-				btn = (WeixinButton) JSONObject.toBean(buttons.getJSONObject(i), WeixinButton.class);
-				subButtons = buttons.getJSONObject(i).getJSONArray("sub_button");
-				if(subButtons != null){
-					lstSubButton = new ArrayList<WeixinButton>();
-					for(int j = 0; j < subButtons.size() ; j++){
-						subBtn = (WeixinButton) JSONObject.toBean(subButtons.getJSONObject(j), WeixinButton.class);
-						lstSubButton.add(subBtn);
-					}
-					btn.setSub_button(lstSubButton);
+		JSONObject menu = result.getJSONObject("menu");
+		JSONArray buttons = menu.getJSONArray("button");
+		JSONArray subButtons = null;
+		lstButton = new ArrayList<WeixinButton>();
+		WeixinButton btn = null;
+		WeixinButton subBtn = null;
+		List<WeixinButton> lstSubButton = null;
+		for (int i = 0; i < buttons.size(); i++) {
+			btn = (WeixinButton) JSONObject.toBean(buttons.getJSONObject(i),
+					WeixinButton.class);
+			subButtons = buttons.getJSONObject(i).getJSONArray("sub_button");
+			if (subButtons != null) {
+				lstSubButton = new ArrayList<WeixinButton>();
+				for (int j = 0; j < subButtons.size(); j++) {
+					subBtn = (WeixinButton) JSONObject.toBean(
+							subButtons.getJSONObject(j), WeixinButton.class);
+					lstSubButton.add(subBtn);
 				}
-				lstButton.add(btn);
+				btn.setSub_button(lstSubButton);
 			}
+			lstButton.add(btn);
 		}
 		return lstButton;
 	}
@@ -100,25 +106,99 @@ public class JwMenuAPI {
 		return msg;
 	}
 	
+	//update-begin--Author:luobaoli  Date:20150714 for：增加“获取自定义菜单配置接口”功能接口
+	//update-begin--Author:luobaoli  Date:20150715 for：优化该方法的处理逻辑
+	/**
+	 * 获取自定义接口配置
+	 * @param accessToken
+	 * @return
+	 * @throws WexinReqException
+	 */
+	public static CustomWeixinButtonConfig getAllMenuConfigure(String accessToken) throws WexinReqException{
+		MenuConfigureGet cmcg = new MenuConfigureGet();
+		cmcg.setAccess_token(accessToken);
+		JSONObject result = WeiXinReqService.getInstance().doWeinxinReqJson(cmcg);
+		Object error = result.get(WeiXinConstant.RETURN_ERROR_INFO_CODE);
+		
+		CustomWeixinButtonConfig customWeixinButtonConfig = (CustomWeixinButtonConfig) JSONObject.toBean(result, new CustomJsonConfig(CustomWeixinButtonConfig.class,"selfmenu_info"));
+		
+		JSONObject selfmenuInfo = result.getJSONObject("selfmenu_info");
+		if(selfmenuInfo!=null && !JSONUtils.isNull(selfmenuInfo)){ 
+			/**处理父类菜单 */
+			JSONArray buttons = selfmenuInfo.getJSONArray("button");
+			List<WeixinButtonExtend> listButton = new ArrayList<WeixinButtonExtend>();
+			for(int i=0;i<buttons.size();i++){
+				WeixinButtonExtend weixinButtonExtend = (WeixinButtonExtend) JSONObject.toBean(buttons.getJSONObject(i),new CustomJsonConfig(WeixinButtonExtend.class,"sub_button"));
+				/**处理子类菜单 */
+				JSONObject subButtonJsonObj = buttons.getJSONObject(i).getJSONObject("sub_button");
+				if(subButtonJsonObj!=null && !JSONUtils.isNull(subButtonJsonObj)){
+					JSONArray subButtons = subButtonJsonObj.getJSONArray("list");
+					if (subButtons != null) {
+						List<WeixinButtonExtend> listSubButton = new ArrayList<WeixinButtonExtend>();
+						for (int j = 0; j < subButtons.size(); j++) {
+							WeixinButtonExtend subBtn = (WeixinButtonExtend) JSONObject.toBean(subButtons.getJSONObject(j), new CustomJsonConfig(WeixinButtonExtend.class,"news_info"));
+							/**处理菜单关联的图文消息 */
+							JSONObject newsInfoJsonObj = subButtons.getJSONObject(j).getJSONObject("news_info");
+							if(newsInfoJsonObj!=null && !JSONUtils.isNull(newsInfoJsonObj)){
+								JSONArray newsInfos = newsInfoJsonObj.getJSONArray("list");
+								List<WxArticleConfig> listNewsInfo = new ArrayList<WxArticleConfig>();
+								for (int k = 0; k < newsInfos.size(); k++) {
+									WxArticleConfig wxArticleConfig = (WxArticleConfig) JSONObject.toBean(newsInfos.getJSONObject(k), WxArticleConfig.class);
+									listNewsInfo.add(wxArticleConfig);
+								}
+								subBtn.setNews_info(listNewsInfo);
+							}
+							listSubButton.add(subBtn);
+						}
+						weixinButtonExtend.setSub_button(listSubButton);
+					}
+				}
+				listButton.add(weixinButtonExtend);
+			}
+			customWeixinButtonConfig.setSelfmenu_info(listButton);
+		}
+		return customWeixinButtonConfig;
+	}
+	//update-end--Author:luobaoli  Date:20150715 for：优化该方法的处理逻辑
+	//update-end--Author:luobaoli  Date:20150714 for：增加“获取自定义菜单配置接口”功能接口
+	
 	public static void main(String[] args){
 		String s="";
 		try {
-			s = "qf1wQXjyNhQNHMg6_rms3P-hkfsS9RcHzP1sixSdcKjgjgljws3YgP38InMJ_mE3yMNixB_8PXgiTYs8YUeQm4RKNaoaoCipyFpxHcx5H9M";
-			//JwTokenAPI.getAccessToken("wx00737224cb9dbc7d","b9479ebdb58d1c6b6efd4171ebe718b5");
+			s = "3DGIfJqqupzTPxvq_P-0ATDC2MDjFLqaz8S41SPmRIqLaA3PSb8FgN_PuhpZ5jEB4D6w7ZNeX3gbC3CfSOAz2wt4DxVKi2HD5BCjoecrB0Q";
+//			s = JwTokenAPI.getAccessToken("wx00737224cb9dbc7d","b9479ebdb58d1c6b6efd4171ebe718b5");
+//			s = JwTokenAPI.getAccessToken("wx298c4cc7312063df","fbf8cebf983c931bd7c1bee1498f8605");
 			System.out.println(s);
-			//WeixinMenuService.createMenu(s, button)
-			List<WeixinButton> b = JwMenuAPI.getAllMenu(s);
-			/*
-			List<WeixinButton> sub_button = new ArrayList<WeixinButton>();
-			WeixinButton testsUb = new WeixinButton();
-			testsUb.setName("测试sub菜单");
-			sub_button.add(testsUb);*/
-			b.get(0).setName("测01");;
-			//s = getMenuButtonJson("button",b);
-			/*Gson gson = new Gson();
-			System.out.println(json);*/
-			s= JwMenuAPI.createMenu(s,b);
-			System.out.println(s);
+//			WeixinButton button = new WeixinButton();
+			CustomWeixinButtonConfig cb = JwMenuAPI.getAllMenuConfigure(s);
+			
+//			for(WeixinButton bb : b){
+//				System.out.println(bb.toString());
+//			}
+//			List<WeixinButton> sub_button = new ArrayList<WeixinButton>();
+//			List<WeixinButton> testsUb = new ArrayList<WeixinButton>();
+//			WeixinButton w = new WeixinButton();
+//			w.setName("测试菜单");
+//			testsUb.add(w);
+//			
+//			WeixinButton w1 = new WeixinButton();
+//			/*
+//			   "type": "scancode_waitmsg", 
+//               "name": "扫码带提示", 
+//               "key": "rselfmenu_0_0",
+//            */ 
+//			w1.setName("测试sub菜单");
+//			w1.setKey("rselfmenu_0_0");
+//			w1.setType("scancode_waitmsg");
+//			sub_button.add(w1);
+//			w.setSub_button(sub_button);
+//			
+//			
+//			//s = getMenuButtonJson("button",b);
+//			/*Gson gson = new Gson();
+//			System.out.println(json);*/
+//			s= JwMenuAPI.createMenu(s,testsUb);
+//			System.out.println(s);
 		} catch (WexinReqException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

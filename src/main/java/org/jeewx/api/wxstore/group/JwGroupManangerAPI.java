@@ -106,10 +106,8 @@ public class JwGroupManangerAPI {
 			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "GET", null);
 			// 正常返回
 			List<GroupDetailInfo> groupsDetailInfo = null;
-			if (result.getInt("errcode") == 0) {
-				JSONArray info = result.getJSONArray("groups_detail");
-				groupsDetailInfo = JSONHelper.toList(info, GroupDetailInfo.class);
-			}
+			JSONArray info = result.getJSONArray("groups_detail");
+			groupsDetailInfo = JSONHelper.toList(info, GroupDetailInfo.class);
 			return groupsDetailInfo;
 		}
 		return null;
@@ -126,10 +124,8 @@ public class JwGroupManangerAPI {
 			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", json);
 			// 正常返回
 			GroupDetailInfo groupDetailInfo = null;
-			if (result.getInt("errcode") == 0) {
-				JSONObject info = result.getJSONObject("group_detail");
-				groupDetailInfo = (GroupDetailInfo)JSONObject.toBean(info, GroupDetailInfo.class);
-			}
+			JSONObject info = result.getJSONObject("group_detail");
+			groupDetailInfo = (GroupDetailInfo)JSONObject.toBean(info, GroupDetailInfo.class);
 			return groupDetailInfo;
 		}
 		return null;

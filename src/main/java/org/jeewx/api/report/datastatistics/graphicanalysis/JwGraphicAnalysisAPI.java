@@ -20,6 +20,8 @@ import org.jeewx.api.report.datastatistics.graphicanalysis.model.GraphicAnalysis
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
+
 /** 
 * @ClassName: JwGraphicAnalysisAPI 
 * @Description: 图文分析数据接口
@@ -62,12 +64,12 @@ public class JwGraphicAnalysisAPI {
 				
 				JSONArray array = null;
 				GraphicAnalysisRtnInfo graphicAnalysisRtnInfo = null;
-				if(error == null && result.get("list").toString() != null){
-					array = (JSONArray) result.get("list");
-					for (Object object : array) {
-						graphicAnalysisRtnInfo = (GraphicAnalysisRtnInfo) JSONObject.toBean((JSONObject) object,GraphicAnalysisRtnInfo.class);
-						graphicAnalysisRtnInfoList.add(graphicAnalysisRtnInfo);
-					}
+				array = (JSONArray) result.get("list");
+				for (Object object : array) {
+					graphicAnalysisRtnInfo = (GraphicAnalysisRtnInfo) JSONObject
+							.toBean((JSONObject) object,
+									GraphicAnalysisRtnInfo.class);
+					graphicAnalysisRtnInfoList.add(graphicAnalysisRtnInfo);
 				}
 				return graphicAnalysisRtnInfoList;
 			}
@@ -103,12 +105,15 @@ public class JwGraphicAnalysisAPI {
 				
 				JSONArray array = null;
 				GraphicAnalysisRtnInfo graphicAnalysisRtnInfo = null;
-				if(error == null && result.get("list").toString() != null){
-					array = (JSONArray) result.get("list");
-					for (Object object: array) {
-						graphicAnalysisRtnInfo = (GraphicAnalysisRtnInfo) JSONObject.toBean((JSONObject) object,GraphicAnalysisRtnInfo.class);
-						graphicAnalysisRtnInfoList.add(graphicAnalysisRtnInfo);
-					}
+				array = (JSONArray) result.get("list");
+				Gson gson = new Gson();
+				//修复JSONObject不能解析details内容的BUG
+				for (Object object : array) {
+					graphicAnalysisRtnInfo = gson.fromJson(object.toString(), GraphicAnalysisRtnInfo.class); 
+//					graphicAnalysisRtnInfo = (GraphicAnalysisRtnInfo) JSONObject
+//							.toBean((JSONObject) object,
+//									GraphicAnalysisRtnInfo.class);
+					graphicAnalysisRtnInfoList.add(graphicAnalysisRtnInfo);
 				}
 				return graphicAnalysisRtnInfoList;
 			}
@@ -144,12 +149,12 @@ public class JwGraphicAnalysisAPI {
 				
 				JSONArray array = null;
 				GraphicAnalysisRtnInfo graphicAnalysisRtnInfo = null;
-				if(error == null && result.get("list").toString() != null){
-					array = (JSONArray) result.get("list");
-					for (Object object: array) {
-						graphicAnalysisRtnInfo = (GraphicAnalysisRtnInfo) JSONObject.toBean((JSONObject) object,GraphicAnalysisRtnInfo.class);
-						graphicAnalysisRtnInfoList.add(graphicAnalysisRtnInfo);
-					}
+				array = (JSONArray) result.get("list");
+				for (Object object : array) {
+					graphicAnalysisRtnInfo = (GraphicAnalysisRtnInfo) JSONObject
+							.toBean((JSONObject) object,
+									GraphicAnalysisRtnInfo.class);
+					graphicAnalysisRtnInfoList.add(graphicAnalysisRtnInfo);
 				}
 				return graphicAnalysisRtnInfoList;
 			}
@@ -184,13 +189,13 @@ public class JwGraphicAnalysisAPI {
 				
 				JSONArray array = null;
 				GraphicAnalysisRtnInfo graphicAnalysisRtnInfo = null;
-				if(error == null && result.get("list").toString() != null){
-					array = (JSONArray) result.get("list");
-					for (Object object: array) {
-						graphicAnalysisRtnInfo = (GraphicAnalysisRtnInfo) JSONObject.toBean((JSONObject) object,GraphicAnalysisRtnInfo.class);
-						
-						graphicAnalysisRtnInfoList.add(graphicAnalysisRtnInfo);
-					}
+				array = (JSONArray) result.get("list");
+				for (Object object : array) {
+					graphicAnalysisRtnInfo = (GraphicAnalysisRtnInfo) JSONObject
+							.toBean((JSONObject) object,
+									GraphicAnalysisRtnInfo.class);
+
+					graphicAnalysisRtnInfoList.add(graphicAnalysisRtnInfo);
 				}
 				return graphicAnalysisRtnInfoList;
 			}
@@ -225,13 +230,13 @@ public class JwGraphicAnalysisAPI {
 				
 				JSONArray array = null;
 				GraphicAnalysisRtnInfo graphicAnalysisRtnInfo = null;
-				if(error == null && result.get("list").toString() != null){
-					array = (JSONArray) result.get("list");
-					for (Object object: array) {
-						graphicAnalysisRtnInfo = (GraphicAnalysisRtnInfo) JSONObject.toBean((JSONObject) object,GraphicAnalysisRtnInfo.class);
-						
-						graphicAnalysisRtnInfoList.add(graphicAnalysisRtnInfo);
-					}
+				array = (JSONArray) result.get("list");
+				for (Object object : array) {
+					graphicAnalysisRtnInfo = (GraphicAnalysisRtnInfo) JSONObject
+							.toBean((JSONObject) object,
+									GraphicAnalysisRtnInfo.class);
+
+					graphicAnalysisRtnInfoList.add(graphicAnalysisRtnInfo);
 				}
 				return graphicAnalysisRtnInfoList;
 			}
@@ -255,13 +260,13 @@ public class JwGraphicAnalysisAPI {
 				
 				JSONArray array = null;
 				GraphicAnalysisRtnInfo graphicAnalysisRtnInfo = null;
-				if(error == null && result.get("list").toString() != null){
-					array = (JSONArray) result.get("list");
-					for (Object object: array) {
-						graphicAnalysisRtnInfo = (GraphicAnalysisRtnInfo) JSONObject.toBean((JSONObject) object,GraphicAnalysisRtnInfo.class);
-						
-						graphicAnalysisRtnInfoList.add(graphicAnalysisRtnInfo);
-					}
+				array = (JSONArray) result.get("list");
+				for (Object object : array) {
+					graphicAnalysisRtnInfo = (GraphicAnalysisRtnInfo) JSONObject
+							.toBean((JSONObject) object,
+									GraphicAnalysisRtnInfo.class);
+
+					graphicAnalysisRtnInfoList.add(graphicAnalysisRtnInfo);
 				}
 				return graphicAnalysisRtnInfoList;
 			}

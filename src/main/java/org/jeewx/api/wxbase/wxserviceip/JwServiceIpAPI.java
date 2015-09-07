@@ -36,12 +36,10 @@ public class JwServiceIpAPI {
 		JSONObject result = WeiXinReqService.getInstance().doWeinxinReqJson(param);
 		Object error = result.get(WeiXinConstant.RETURN_ERROR_INFO_CODE);
 		List<String> lstServiceIp = null;
-		if(error == null){
-			JSONArray infoArray = result.getJSONArray(RETURN_INFO_NAME);
-			lstServiceIp = new ArrayList<String>(infoArray.size());
-			for(int i=0;i<infoArray.size();i++){
-				lstServiceIp.add(infoArray.getString(i));
-			}
+		JSONArray infoArray = result.getJSONArray(RETURN_INFO_NAME);
+		lstServiceIp = new ArrayList<String>(infoArray.size());
+		for (int i = 0; i < infoArray.size(); i++) {
+			lstServiceIp.add(infoArray.getString(i));
 		}
 		return lstServiceIp;
 	}

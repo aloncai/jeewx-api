@@ -40,10 +40,8 @@ public class JwOrderManagerAPI {
 			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", json);
 			// 正常返回
 			OrderInfo orderInfo = null;
-			if (result.getInt("errcode") == 0) {
-				JSONObject info = result.getJSONObject("order");
-				orderInfo = (OrderInfo)JSONObject.toBean(info, OrderInfo.class);
-			}
+			JSONObject info = result.getJSONObject("order");
+			orderInfo = (OrderInfo)JSONObject.toBean(info, OrderInfo.class);
 			return orderInfo;
 		}
 		return null;
@@ -61,10 +59,8 @@ public class JwOrderManagerAPI {
 			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "GET", obj.toString());
 			// 正常返回
 			List<OrderInfo> orderInfos = null;
-			if (result.getInt("errcode") == 0) {
-				JSONArray info = result.getJSONArray("order_list");
-				orderInfos = JSONHelper.toList(info, OrderInfo.class);
-			}
+			JSONArray info = result.getJSONArray("order_list");
+			orderInfos = JSONHelper.toList(info, OrderInfo.class);
 			return orderInfos;
 		}
 		return null;

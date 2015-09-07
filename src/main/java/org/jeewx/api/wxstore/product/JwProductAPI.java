@@ -99,10 +99,8 @@ public class JwProductAPI {
 			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "GET", json);
 			// 正常返回
 			Product product = null;
-			if (result.getInt("errcode") == 0) {
-				JSONObject info = result.getJSONObject("product_info");
-				product = (Product)JSONObject.toBean(info, Product.class);
-			}
+			JSONObject info = result.getJSONObject("product_info");
+			product = (Product)JSONObject.toBean(info, Product.class);
 			return product;
 		}
 		return null;
@@ -183,10 +181,8 @@ public class JwProductAPI {
 			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "GET", json);
 			// 正常返回
 			List<CateInfo> cateInfos = null;
-			if (result.getInt("errcode") == 0) {
-				JSONArray info = result.getJSONArray("cate_list");
-				cateInfos = JSONHelper.toList(info, CateInfo.class);
-			}
+			JSONArray info = result.getJSONArray("cate_list");
+			cateInfos = JSONHelper.toList(info, CateInfo.class);
 			return cateInfos;
 		}
 		return null;
@@ -202,10 +198,8 @@ public class JwProductAPI {
 			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "GET", json);
 			// 正常返回
 			List<SkuInfo> skuInfos = null;
-			if (result.getInt("errcode") == 0) {
-				JSONArray info = result.getJSONArray("sku_table");
-				skuInfos = JSONHelper.toList(info, SkuInfo.class);
-			}
+			JSONArray info = result.getJSONArray("sku_table");
+			skuInfos = JSONHelper.toList(info, SkuInfo.class);
 			return skuInfos;
 		}
 		return null;
@@ -221,10 +215,8 @@ public class JwProductAPI {
 			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "GET", json);
 			// 正常返回
 			List<PropertiesInfo> propertiesInfos = null;
-			if (result.getInt("errcode") == 0) {
-				JSONArray info = result.getJSONArray("properties");
-				propertiesInfos = JSONHelper.toList(info, PropertiesInfo.class);
-			}
+			JSONArray info = result.getJSONArray("properties");
+			propertiesInfos = JSONHelper.toList(info, PropertiesInfo.class);
 			return propertiesInfos;
 		}
 		return null;

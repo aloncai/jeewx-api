@@ -21,7 +21,7 @@ public class JwQrcodeAPI {
 	 * 创建二维码
 	 * @throws WexinReqException 
 	 */
-	public QrcodeRtnInfo doAddQrcode(String accesstoken,QrcodeInfo qrcodeInfo) throws WexinReqException {
+	public static QrcodeRtnInfo doAddQrcode(String accesstoken,QrcodeInfo qrcodeInfo) throws WexinReqException {
 		if (accesstoken != null) {
 			qrcodeInfo.setAccess_token(accesstoken);
 			JSONObject result = WeiXinReqService.getInstance().doWeinxinReqJson(qrcodeInfo);
@@ -34,7 +34,7 @@ public class JwQrcodeAPI {
 	/**
 	 * 获取api_ticket
 	 */
-	public GetticketRtn doGetticket(String accesstoken)throws WexinReqException {
+	public static GetticketRtn doGetticket(String accesstoken)throws WexinReqException {
 		if (accesstoken != null) {
 			Getticket gk = new Getticket();
 			gk.setAccess_token(accesstoken);

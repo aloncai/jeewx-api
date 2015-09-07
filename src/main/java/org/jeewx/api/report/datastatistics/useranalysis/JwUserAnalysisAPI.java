@@ -54,12 +54,12 @@ public class JwUserAnalysisAPI {
 				
 				JSONArray array = null;
 				UserAnalysisRtnInfo userAnalysisRtnInfo = null;
-				if(error == null && result.get("list").toString() != null){
-					array = (JSONArray) result.get("list");
-					for (Object object : array) {
-						userAnalysisRtnInfo = (UserAnalysisRtnInfo) JSONObject.toBean((JSONObject) object,UserAnalysisRtnInfo.class);
-						userAnalysisRtnInfoList.add(userAnalysisRtnInfo);
-					}
+				array = (JSONArray) result.get("list");
+				for (Object object : array) {
+					userAnalysisRtnInfo = (UserAnalysisRtnInfo) JSONObject
+							.toBean((JSONObject) object,
+									UserAnalysisRtnInfo.class);
+					userAnalysisRtnInfoList.add(userAnalysisRtnInfo);
 				}
 				return userAnalysisRtnInfoList;
 			}
@@ -92,12 +92,12 @@ public class JwUserAnalysisAPI {
 				
 				JSONArray array = null;
 				UserAnalysisRtnInfo userAnalysisRtnInfo = null;
-				if(error == null && result.get("list").toString() != null){
-					array = (JSONArray) result.get("list");
-					for (Object object: array) {
-						userAnalysisRtnInfo = (UserAnalysisRtnInfo) JSONObject.toBean((JSONObject) object,UserAnalysisRtnInfo.class);
-						userAnalysisRtnInfoList.add(userAnalysisRtnInfo);
-					}
+				array = (JSONArray) result.get("list");
+				for (Object object : array) {
+					userAnalysisRtnInfo = (UserAnalysisRtnInfo) JSONObject
+							.toBean((JSONObject) object,
+									UserAnalysisRtnInfo.class);
+					userAnalysisRtnInfoList.add(userAnalysisRtnInfo);
 				}
 				return userAnalysisRtnInfoList;
 			}

@@ -3,9 +3,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeewx</groupId>
 	<artifactId>jeewx-api</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.5</version>
+
+	<distributionManagement>  
+	  <repository>
+	    <id>jeecg</id>  
+	    <url>http://maven.jeecg.com:8090/nexus/content/repositories/jeecg</url>
+	  </repository>
+	</distributionManagement> 
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<commons-beanutils.version>1.7.0</commons-beanutils.version>
 		<commons-collections.version>3.2.1</commons-collections.version>
 		<commons-chain.version>1.2</commons-chain.version>

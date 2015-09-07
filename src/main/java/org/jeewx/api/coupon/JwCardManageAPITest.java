@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.jeewx.api.core.common.AccessToken;
+import org.jeewx.api.core.exception.WexinReqException;
 import org.jeewx.api.coupon.manage.JwCardManageAPI;
 import org.jeewx.api.coupon.manage.model.BatchGetCardRtnInfo;
 import org.jeewx.api.coupon.manage.model.CardUpdate;
@@ -13,7 +15,8 @@ import org.jeewx.api.coupon.manage.model.CommCardRtnInfo;
 import org.jeewx.api.coupon.manage.model.DelRtnInfo;
 import org.jeewx.api.coupon.manage.model.GetCardDetailRtnInfo;
 import org.jeewx.api.coupon.manage.model.GetCardRtnInfo;
-import org.jeewx.api.core.common.AccessToken;
+import org.jeewx.api.coupon.qrcode.JwQrcodeAPI;
+import org.jeewx.api.coupon.qrcode.model.GetticketRtn;
 /**
  * 测试卡券管理
  * @author mcl
@@ -21,8 +24,44 @@ import org.jeewx.api.core.common.AccessToken;
  */
 public class JwCardManageAPITest {
 
-	private static String appid = "wxb512901288a94943";
-	private static String appscret = "6f94b81b49cf9f89fafe305dcaf2c632";
+	private static String appid = "wxd2b52b8f4bd5af7f";
+	private static String appscret = "1b982dba2c3f853c3396babcdfa6cb1e";
+	
+	/**
+	 * 测试卡券管理
+	 */
+	public static void main1(String[] args) {
+		AccessToken atoken = new AccessToken(appid, appscret);
+		String newAccessToken = atoken.getNewAccessToken();
+		//获取所有卡券ID(此方法适合数量不超过50个的)
+		List<String> ls = getCardList(newAccessToken);
+		for(String p:ls){
+			//根据卡券ID，获取卡券详细
+			GetCardDetailRtnInfo rtnInfo = JwCardManageAPI.doGetCardDetail(newAccessToken, p);
+			if(rtnInfo.getCard().getCard_type().equals("CASH")){
+				System.out.println(rtnInfo.getCard().getCash().getReduce_cost()/100);
+			}
+		}
+		
+		
+		//1.0批量获取卡券
+//		doBatchGetCardTest(newAccessToken);
+//		//2.0删除卡券
+//		doDelCardTest(newAccessToken);
+//		//3.0获取卡券详细信息
+//		doGetCardDetailTest(newAccessToken);
+//		//4.0获取卡券信息
+//		doGetCardTest(newAccessToken);
+//		//5.0更新卡券库存
+//		doModifystockCardTest(newAccessToken);
+//		//6.0设置卡券失效状态
+//		doUnavailableCodeTest(newAccessToken);
+//		//7.0更新卡券信息
+//		doUpdateCardTest(newAccessToken);
+//		//8.0更新卡券code
+//		doUpdateCodeTest(newAccessToken);
+	}
+
 	
 	/**
 	 * 测试卡券管理
@@ -30,24 +69,28 @@ public class JwCardManageAPITest {
 	public static void main(String[] args) {
 		AccessToken atoken = new AccessToken(appid, appscret);
 		String newAccessToken = atoken.getNewAccessToken();
-		//1.0批量获取卡券
-		doBatchGetCardTest(newAccessToken);
-		//2.0删除卡券
-		doDelCardTest(newAccessToken);
-		//3.0获取卡券详细信息
-		doGetCardDetailTest(newAccessToken);
-		//4.0获取卡券信息
-		doGetCardTest(newAccessToken);
-		//5.0更新卡券库存
-		doModifystockCardTest(newAccessToken);
-		//6.0设置卡券失效状态
-		doUnavailableCodeTest(newAccessToken);
-		//7.0更新卡券信息
-		doUpdateCardTest(newAccessToken);
-		//8.0更新卡券code
-		doUpdateCodeTest(newAccessToken);
+		try {
+			GetticketRtn s = JwQrcodeAPI.doGetticket(newAccessToken);
+			System.out.println(s.getTicket());
+		} catch (WexinReqException e) {
+			e.printStackTrace();
+		}
 	}
-
+	
+	public static List<String> getCardList(String newAccessToken){
+		BatchGetCardRtnInfo rtnInfo = null;
+		rtnInfo = JwCardManageAPI.doBatchGetCard(newAccessToken, 0, 50);
+		if(Integer.parseInt(rtnInfo.getErrcode()) == 0){
+			//System.out.println("JwCardManageAPI.doBatchGetCard["+i+"]" + ":成功");
+			System.out.println("");
+			System.out.println("接口调用成功： card_id_list: "+rtnInfo.getCard_id_list());
+			return rtnInfo.getCard_id_list();
+		}else{
+			System.out.println("接口调用失败："+"["+rtnInfo.getErrmsg()+"]");
+			return null;
+		}
+	}
+	
 	public static boolean doBatchGetCardTest(String newAccessToken) {
 		BatchGetCardRtnInfo rtnInfo = null;
 		Map<String, Integer> onecase = null;
@@ -62,7 +105,8 @@ public class JwCardManageAPITest {
 				rtnInfo = JwCardManageAPI.doBatchGetCard(newAccessToken, onecase.get("offset"), onecase.get("count"));
 				if(Integer.parseInt(rtnInfo.getErrcode()) == 0){
 					pass++;
-					System.out.println("JwCardManageAPI.doBatchGetCard["+i+"]" + ":成功");
+					//System.out.println("JwCardManageAPI.doBatchGetCard["+i+"]" + ":成功");
+					System.out.println("card_id_list: "+rtnInfo.getCard_id_list());
 				}else{
 					fail++;
 					System.out.println("JwCardManageAPI.doBatchGetCard["+i+"]" + ":失败"+"["+rtnInfo.getErrmsg()+"]");
@@ -78,6 +122,7 @@ public class JwCardManageAPITest {
 		}
 		return true;
 	}
+	
 	private static List<Map<String, Integer>> doBatchGetCardParam(){
 		Map<String, Integer> onecase = null;
 		List<Map<String, Integer>> testCases = new ArrayList<Map<String, Integer>>();
