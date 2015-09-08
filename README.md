@@ -3,7 +3,8 @@
 现在微信越来越火，基于微信的公众号和服务号越来越丰富，虽然微信帮助文档已经提供了相关的接口，但是接口比较多，通过代码自己调用比较麻烦，所以为减轻开发者独自创造轮子，将微信API进行了统一封装！
 
 
-2、作者 : Jeecg开源社区
+2、作者 : Jeecg开源社区        www.jeecg.org
+          JeeWx微信管家系统    www.jeewx.com
 
 3、免责声明
 
@@ -39,6 +40,6 @@ org.jeewx.api.core.util.WeiXinReqService.getInstance().doWeinxinReq(ReqType类�
 
 6、更多资料
 
-   为了大家更便捷的使用jeewx-api，社区制作相关的API文档和使用手册
+   为了大家更便捷的使用jeewx-api，社区制作相关的API文档和使用手册,更多资料请在论坛www.jeecg.org查询
 
   《JeeWx-API操作手册.doc》《jeewx-api.chm》更多资料请百度jeewx在官网下载
