@@ -7,9 +7,13 @@
 
 	<distributionManagement>  
 	  <repository>
-	    <id>jeecg</id>  
-	    <url>http://maven.jeecg.com:8090/nexus/content/repositories/jeecg</url>
-	  </repository>
+            <id>jeecg</id>
+            <name>jeecg Repository</name>
+            <url>http://maven.jeecg.org/nexus/content/repositories/jeecg</url>
+            <snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+        </repository>
 	</distributionManagement> 
 
 	<properties>
