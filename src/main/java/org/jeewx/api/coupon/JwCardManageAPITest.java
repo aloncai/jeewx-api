@@ -1,4 +1,4 @@
-package org.jeewx.api.coupon;
+﻿package org.jeewx.api.coupon;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,8 +24,8 @@ import org.jeewx.api.coupon.qrcode.model.GetticketRtn;
  */
 public class JwCardManageAPITest {
 
-	private static String appid = "wxd2b52b8f4bd5af7f";
-	private static String appscret = "1b982dba2c3f853c3396babcdfa6cb1e";
+	private static String appid = "?";
+	private static String appscret = "?";
 	
 	/**
 	 * 测试卡券管理

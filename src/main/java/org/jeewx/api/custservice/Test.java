@@ -1,4 +1,4 @@
-package org.jeewx.api.custservice;
+﻿package org.jeewx.api.custservice;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -9,8 +9,8 @@ import org.jeewx.api.custservice.multicustservice.JwMultiCustomerAPI;
 import org.jeewx.api.custservice.multicustservice.model.ChatRecord;
 
 public class Test {
-    private static String appid = "wxb512901288a94943";
-    private static String appscret = "6f94b81b49cf9f89fafe305dcaf2c632";
+    private static String appid = "?";
+    private static String appscret = "?";
 
     /**
      * @param args
@@ -32,13 +32,13 @@ public class Test {
     // 获取转发多客服的响应消息
     public void getMultiCustServcieMessage() {
         JwMultiCustomerAPI multCust = new JwMultiCustomerAPI();
-        System.out.println(multCust.getMultiCustServcieMessage("oqII7uCZnrPv3xc4eRuk9TACVbxU", "wxb512901288a94943"));
+        System.out.println(multCust.getMultiCustServcieMessage("?", "?"));
     }
     
     // 获取指定客服的响应消息
     public void getSpecCustServcie() {
         JwMultiCustomerAPI multCust = new JwMultiCustomerAPI();
-        System.out.println(multCust.getSpecCustServcie(getNewAccessToken(), "oqII7uCZnrPv3xc4eRuk9TACVbxU", "wxb512901288a94943","xxxxx"));
+        System.out.println(multCust.getSpecCustServcie(getNewAccessToken(), "?", "?","xxxxx"));
     }
     
     // 获取指定客服的响应消息
