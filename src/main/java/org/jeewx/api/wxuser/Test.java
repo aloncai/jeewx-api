@@ -8,10 +8,14 @@ public class Test {
 
 	public static void main(String[] args) {
 		try {
-			String s = JwTokenAPI.getAccessToken("??",????");
-			System.out.println(JwUserAPI.getWxuser(s, "????").getNickname());
+			String accesstoken = "?";
+			String user_openid = "o8QKAuAyDxxfyuBZ9ugSMR4SR5XQ";
+			JwUserAPI.getWxuser(accesstoken, user_openid);
 		} catch (WexinReqException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
+
 }

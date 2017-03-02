@@ -1,6 +1,6 @@
 package org.jeewx.api.wxbase.wxmedia.model;
 
-import org.jeewx.api.wxsendmsg.model.WxArticle;
+import java.util.List;
 
 /**
  * 图文消息图文消息
@@ -12,7 +12,12 @@ public class WxItem {
 	/** 媒体id */
 	private String media_id;
 	/** 图文消息的作者 */
-	private WxArticle content;
+	//-- update-begin--Author:gengjiajia  Date:2016-11-28 for:TASK #1583 【图文管理】
+	//微信接口返回的可能会是多个，使用list接收
+	//private WxArticle content;
+	private List<WxNewsArticle> contents;
+	//-- update-end--Author:gengjiajia  Date:2016-11-28 for:TASK #1583 【图文管理】
+	
 	/** 文件名称 */
 	private String name;
 	/** 这篇图文消息素材的最后更新时间 */
@@ -31,20 +36,28 @@ public class WxItem {
 	}
 
 
-	public WxArticle getContent() {
+	/*public WxArticle getContent() {
 		return content;
 	}
 
 
 	public void setContent(WxArticle content) {
 		this.content = content;
-	}
+	}*/
 
+	
+	public List<WxNewsArticle> getContents() {
+		return contents;
+	}
+	
+	
+	public void setContents(List<WxNewsArticle> contents) {
+		this.contents = contents;
+	}
 
 	public String getName() {
 		return name;
 	}
-
 
 	public void setName(String name) {
 		this.name = name;
@@ -73,7 +86,19 @@ public class WxItem {
 
 	@Override
 	public String toString() {
-		return "WxArticle [media_id=" + media_id + ", content=" + content + ", name=" + name + ", update_time=" + update_time + ", content=" + content + ", url=" + url + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("WxItem [media_id=");
+		builder.append(media_id);
+		builder.append(", contents=");
+		builder.append(contents);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", update_time=");
+		builder.append(update_time);
+		builder.append(", url=");
+		builder.append(url);
+		builder.append("]");
+		return builder.toString();
 	}
 
 	 

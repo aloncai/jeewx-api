@@ -1,4 +1,4 @@
-﻿package org.jeewx.api.core.test;
+package org.jeewx.api.core.test;
 
 import org.jeewx.api.core.exception.WexinReqException;
 import org.jeewx.api.core.req.WeiXinReqService;
@@ -16,8 +16,8 @@ public class ReqTest {
 	 * @throws WexinReqException
 	 */
 	public String getToken() throws WexinReqException{
-		String appId = "?";
-		String appSecret = "?";
+		String appId = "wx00737224cb9dbc7d";
+		String appSecret = "b9479ebdb58d1c6b6efd4171ebe718b5";
 		AccessToken token = new AccessToken();
 		token.setAppid(appId);
 		token.setSecret(appSecret);

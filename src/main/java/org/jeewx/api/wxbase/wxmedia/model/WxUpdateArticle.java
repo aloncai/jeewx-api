@@ -1,8 +1,5 @@
 package org.jeewx.api.wxbase.wxmedia.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jeewx.api.wxsendmsg.model.WxArticle;
 /**
  * 修改消息素材
@@ -12,8 +9,11 @@ import org.jeewx.api.wxsendmsg.model.WxArticle;
 public class WxUpdateArticle {
 	private String media_id;
 	private int index;
-	private WxArticle article = new WxArticle();
-
+	//-- update-begin--Author:gengjiajia  Date:2016-11-28 for:TASK #1583 【图文管理】
+	//原字段名称不符合微信接口条件
+	//private WxArticle article = new WxArticle();
+	private WxArticle articles = new WxArticle();
+	//-- update-end--Author:gengjiajia  Date:2016-11-28 for:TASK #1583 【图文管理】
 	
 
 	public String getMedia_id() {
@@ -40,7 +40,7 @@ public class WxUpdateArticle {
 
 
 
-	public WxArticle getArticle() {
+	/*public WxArticle getArticle() {
 		return article;
 	}
 
@@ -49,12 +49,39 @@ public class WxUpdateArticle {
 	public void setArticle(WxArticle article) {
 		this.article = article;
 	}
+*/
+
+
+	/*@Override
+	public String toString() {
+		return "WxArticlesRequest [media_id=" + media_id +"index=" + index +"article=" + article + "]";
+	}*/
+
+
+
+	public WxArticle getArticles() {
+		return articles;
+	}
+
+
+
+	public void setArticles(WxArticle articles) {
+		this.articles = articles;
+	}
 
 
 
 	@Override
 	public String toString() {
-		return "WxArticlesRequest [media_id=" + media_id +"index=" + index +"article=" + article + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("WxUpdateArticle [media_id=");
+		builder.append(media_id);
+		builder.append(", index=");
+		builder.append(index);
+		builder.append(", articles=");
+		builder.append(articles);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

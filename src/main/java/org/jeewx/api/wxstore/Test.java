@@ -1,4 +1,4 @@
-﻿package org.jeewx.api.wxstore;
+package org.jeewx.api.wxstore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ import org.jeewx.api.wxstore.stock.model.StockInfo;
 
 public class Test {
 
-	private static String appid = "?";
+	private static String appid = "wxb512901288a94943";
 	private static String appscret = "?";
 	
 	String filePath = "C:/Users/wangbingwang/Desktop/wxpic/";

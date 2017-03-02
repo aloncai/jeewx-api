@@ -3,10 +3,22 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jeewx</groupId>
 	<artifactId>jeewx-api</artifactId>
-	<version>1.0.5</version>
+	<version>1.1-SNAPSHOT</version>
 
-	<distributionManagement>  
-	  <repository>
+	<distributionManagement>
+	  	<repository>
+            <id>jeecg</id>
+            <name>jeecg Repository</name>
+            <url>http://maven.jeecg.com:8090/nexus/content/repositories/jeecg</url>
+        </repository>
+        <snapshotRepository>
+	        <id>jeecg-snapshots</id>
+            <name>jeecg Snapshot Repository</name>
+            <url>http://maven.jeecg.com:8090/nexus/content/repositories/snapshots/</url>
+	    </snapshotRepository>
+	</distributionManagement>
+	<repositories>
+		<repository>
             <id>jeecg</id>
             <name>jeecg Repository</name>
             <url>http://maven.jeecg.org/nexus/content/repositories/jeecg</url>
@@ -14,7 +26,15 @@
 				<enabled>false</enabled>
 			</snapshots>
         </repository>
-	</distributionManagement> 
+		<repository>
+            <id>jeecg-snapshots</id>
+            <name>jeecg-snapshots Repository</name>
+            <url>http://maven.jeecg.org/nexus/content/repositories/snapshots</url>
+            <snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+        </repository>
+	</repositories>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -174,4 +194,5 @@
             <version>3.0.0</version>
         </dependency>
 	</dependencies>
+	
 </project>

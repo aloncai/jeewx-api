@@ -1,4 +1,4 @@
-﻿package org.jeewx.api.wxsendmsg.test;
+package org.jeewx.api.wxsendmsg.test;
 
 import static org.junit.Assert.fail;
 
@@ -31,7 +31,7 @@ public class JwSendMessageAPITest {
 		service = new JwSendMessageAPI();
 		touser = "oA1Vct-_r1rAd5mcL3lEZKgcvGZY";
 		 
-		String appid = "?";
+		String appid = "wxb512901288a94943";
 		String appscret = "?";
 		
 		AccessToken token = new AccessToken(appid, appscret);

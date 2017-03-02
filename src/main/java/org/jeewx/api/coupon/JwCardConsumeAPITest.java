@@ -1,4 +1,4 @@
-﻿package org.jeewx.api.coupon;
+package org.jeewx.api.coupon;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import org.jeewx.api.core.common.AccessToken;
  */
 public class JwCardConsumeAPITest {
 
-	private static String appid = "?";
+	private static String appid = "wxb512901288a94943";
 	private static String appscret = "?";
 
 	/**

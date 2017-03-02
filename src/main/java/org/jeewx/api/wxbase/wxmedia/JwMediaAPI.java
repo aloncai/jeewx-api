@@ -1,10 +1,9 @@
 package org.jeewx.api.wxbase.wxmedia;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import net.sf.json.JSONObject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jeewx.api.core.common.WxstoreUtils;
@@ -20,9 +19,11 @@ import org.jeewx.api.wxbase.wxmedia.model.WxArticlesRespponseByMaterial;
 import org.jeewx.api.wxbase.wxmedia.model.WxCountResponse;
 import org.jeewx.api.wxbase.wxmedia.model.WxDescriptionRequest;
 import org.jeewx.api.wxbase.wxmedia.model.WxDwonload;
+import org.jeewx.api.wxbase.wxmedia.model.WxItem;
 import org.jeewx.api.wxbase.wxmedia.model.WxMediaForMaterial;
 import org.jeewx.api.wxbase.wxmedia.model.WxMediaForMaterialResponse;
 import org.jeewx.api.wxbase.wxmedia.model.WxNews;
+import org.jeewx.api.wxbase.wxmedia.model.WxNewsArticle;
 import org.jeewx.api.wxbase.wxmedia.model.WxUpdateArticle;
 import org.jeewx.api.wxbase.wxmedia.model.WxUpload;
 import org.jeewx.api.wxsendmsg.JwSendMessageAPI;
@@ -30,6 +31,9 @@ import org.jeewx.api.wxsendmsg.model.WxArticle;
 import org.jeewx.api.wxsendmsg.model.WxArticlesResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  * 微信--token信息
@@ -51,6 +55,10 @@ public class JwMediaAPI {
 	private static String material_update_news_url = "https://api.weixin.qq.com/cgi-bin/material/update_news?access_token=ACCESS_TOKEN";
 	// 获取素材列表
 	private static String material_batchget_material_url = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=ACCESS_TOKEN";
+	//新增其他类型永久素材  图文素材上传专用
+	private static String add_material = "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=ACCESS_TOKEN&type=TYPE";
+	//删除永久图文素材
+	private static String material_del_news_url = "https://api.weixin.qq.com/cgi-bin/material/del_material?access_token=ACCESS_TOKEN";
 	
 	/**
 	 * 
@@ -111,7 +119,7 @@ public class JwMediaAPI {
 		}
 	}
 	/**
-	 * 上传新增永久图文素材
+	 * 上传新增永久图文素材 (经测试，该方法不可用)
 	 * 
 	 * @param accesstoken
 	 * @param wxArticles
@@ -195,7 +203,7 @@ public class JwMediaAPI {
 	}
 	
 	/**
-	 * 获取永久素材
+	 * 获取永久素材 (经测试，该方法调用接口返回时封装实体对象不可用)
 	 * 
 	 * @param accesstoken
 	 * @param wxArticles
@@ -225,7 +233,7 @@ public class JwMediaAPI {
 	}
 	
 	/**
-	 * 删除永久素材
+	 * 删除永久素材 (经测试，该方法调用接口地址不对)
 	 * 
 	 * @param accesstoken
 	 * @param mediaId
@@ -249,7 +257,7 @@ public class JwMediaAPI {
 	}
 	
 	/**
-	 * 修改永久素材
+	 * 修改永久素材 
 	 * 
 	 * @param accesstoken
 	 * @param wxUpdateArticle
@@ -270,7 +278,7 @@ public class JwMediaAPI {
 	}
 	
 	/**
-	 * 获取素材列表
+	 * 获取素材列表 (经测试，该方法调用接口后json数据转java对象报错)
 	 * 
 	 * @param accesstoken,type,offset,count
 	 * @param WxNews
@@ -297,7 +305,7 @@ public class JwMediaAPI {
 		return wn;
 	}
 	/**
-	 * 新增永久图文素材
+	 * 新增永久图文素材  (经测试，该方法不可用)
 	 * @param accesstoken
 	 * @param wxArticles
 	 * @return
@@ -312,7 +320,7 @@ public class JwMediaAPI {
 		return response.getMedia_id();
 	}
 	/**
-	 * 新增其他类型永久素材
+	 * 新增其他类型永久素材  (经测试，该方法不能上传永久图片素材)
 	 * 
 	 * @param filePath
 	 * @param fileName
@@ -367,4 +375,190 @@ public class JwMediaAPI {
 
 	}
 
+	//-- update-begin--Author:gengjiajia  Date:2016-11-28 for:TASK #1583 【图文管理】重写管理永久素材的接口
+	/**
+	 * 新增其他永久素材   
+	 * @param accesstoken
+	 * @param wx
+	 * @return
+	 * @throws WexinReqException
+	 */
+	public static WxMediaForMaterialResponse addMediaFileByMaterialNews(String accesstoken, String type,String filePath,String fileName) throws WexinReqException {
+		WxMediaForMaterialResponse mediaResource = null;
+		if (accesstoken != null) {
+			String requestUrl = add_material.replace("ACCESS_TOKEN", accesstoken);
+			String url = requestUrl.replace("TYPE", type);
+			File file = new File(filePath + fileName);
+			String contentType = WeiXinReqUtil.getFileContentType(fileName.substring(fileName.lastIndexOf(".") + 1));
+			JSONObject result = WxstoreUtils.uploadMediaFileNews(url, file, contentType);
+			if (result.containsKey("errcode")) {
+				logger.error("新增其他永久素材 失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
+				throw new WexinReqException(result.getString("errcode"));
+			} else {
+				logger.info("====新增其他永久素材  成功====result："+result.toString());
+				mediaResource = new WxMediaForMaterialResponse();
+				mediaResource.setMedia_id(result.getString("media_id"));
+				mediaResource.setUrl(result.getString("url"));
+			}
+		}
+		return mediaResource;
+	}
+	
+	/**
+	 * 上传新增永久图文素材
+	 * 
+	 * @param accesstoken
+	 * @param wxArticles
+	 *            图文集合，数量不大于10
+	 * @return WxArticlesResponse 上传图文消息素材返回结果
+	 * @throws WexinReqException
+	 */
+	public static WxArticlesResponse uploadArticlesByMaterialNews(String accesstoken, List<WxArticle> wxArticles) throws WexinReqException {
+		WxArticlesResponse wxArticlesResponse = null;
+		if (wxArticles.size() == 0) {
+			logger.error("没有上传的图文消息");
+		} else if (wxArticles.size() > 10) {
+			logger.error("图文消息最多为10个图文");
+		} else {
+			if (accesstoken != null) {
+				String requestUrl = material_add_news_url.replace("ACCESS_TOKEN", accesstoken);
+				WxArticlesRequest wxArticlesRequest = new WxArticlesRequest();
+				wxArticlesRequest.setArticles(wxArticles);
+				JSONObject obj = JSONObject.fromObject(wxArticlesRequest);
+				JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
+				if (result.has("errcode")) {
+					logger.error("新增永久图文素材失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
+					throw new WexinReqException(result.getString("errcode"));
+				} else {
+					logger.info("=====新增永久图文素材成功=====result："+result.toString());
+					wxArticlesResponse = new WxArticlesResponse();
+					wxArticlesResponse.setMedia_id(result.getString("media_id"));
+				}
+			}
+		}
+		return wxArticlesResponse;
+	}
+	
+	/**
+	 * 修改永久素材
+	 * 
+	 * @param accesstoken
+	 * @param wxUpdateArticle
+	 * @throws WexinReqException
+	 */
+	public static void updateArticlesByMaterialNews(String accesstoken,WxUpdateArticle wxUpdateArticle) throws WexinReqException {
+		if (accesstoken != null) {
+			String requestUrl = material_update_news_url.replace("ACCESS_TOKEN", accesstoken);
+			
+			JSONObject obj = JSONObject.fromObject(wxUpdateArticle);
+			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
+			if (result.has("errcode")&&result.getInt("errcode")!=0) {
+				logger.error("修改永久素材失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
+				throw new WexinReqException(result.getString("errcode"));
+			}else{
+				logger.info("=====修改永久素材成功=====");
+			} 
+		}
+	}
+	
+	/**
+	 * 获取永久素材  
+	 * 
+	 * @param accesstoken
+	 * @param wxArticles
+	 *            图文集合，数量不大于10
+	 * @return WxArticlesResponse 上传图文消息素材返回结果
+	 * @throws WexinReqException
+	 */
+	public static List<WxNewsArticle> getArticlesByMaterialNews(String accesstoken,String mediaId) throws WexinReqException {
+		List<WxNewsArticle> wxArticleList = null;
+			if (accesstoken != null) {
+				String requestUrl = material_get_material_url.replace("ACCESS_TOKEN", accesstoken);
+				JSONObject obj = new JSONObject();
+				obj.put("media_id", mediaId);
+				JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
+				if (result.has("errcode")) {
+					logger.error("获取永久素材 失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg"));
+					throw new WexinReqException(result.getString("errcode"));
+				} else {
+					logger.info("====获取永久素材成功====result:"+result.toString());
+					JSONArray newsItemJsonArr = result.getJSONArray("news_item");
+					wxArticleList = JSONArray.toList(newsItemJsonArr, WxNewsArticle.class);
+				}
+		}
+		return wxArticleList;
+	}
+	
+	/**
+	 * 获取素材列表
+	 * 
+	 * @param accesstoken,type,offset,count
+	 * @param WxNews
+	 * @throws WexinReqException
+	 */
+	public static WxNews queryArticlesByMaterialNews(String accesstoken,String type,int offset,int count) throws WexinReqException {
+		WxNews news = new WxNews();
+		if (accesstoken != null) {
+			String requestUrl = material_batchget_material_url.replace("ACCESS_TOKEN", accesstoken);
+			
+			JSONObject obj = new JSONObject();
+			obj.put("type", type);
+			obj.put("offset", offset);
+			obj.put("count", count);
+			JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
+			if (result.has("errcode")&&result.getInt("errcode")!=0) {
+				logger.error("=====获取素材列表失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg")+"=====");
+				throw new WexinReqException(result.getString("errcode"));
+			} else{
+				logger.info("=====获取素材列表成功！result:"+result.toString()+"=====");
+				JSONArray jsonArray = result.getJSONArray("item");
+				Object[] itemArr = jsonArray.toArray();
+				List<WxItem> wxItems = new ArrayList<WxItem>();
+				for (int i = 0; i < itemArr.length; i++) {
+					WxItem wxItem = new WxItem();
+					Object itemObj = itemArr[i];
+					JSONObject itemJson = JSONObject.fromObject(itemObj);
+					String mediaId = itemJson.getString("media_id");
+					Object newsItemObj = itemJson.get("content");
+					JSONObject newsItemJson = JSONObject.fromObject(newsItemObj);
+					JSONArray newsItemJsonArr = newsItemJson.getJSONArray("news_item");
+					List<WxNewsArticle> wxArticleList = JSONArray.toList(newsItemJsonArr, WxNewsArticle.class);
+					wxItem.setContents(wxArticleList);
+					wxItem.setMedia_id(mediaId);
+					if(itemJson.containsKey("name")){
+						wxItem.setName("name");
+					}
+					wxItem.setUpdate_time(itemJson.getString("update_time"));
+					wxItems.add(wxItem);
+				}
+				news.setItems(wxItems);
+			}
+		}
+		return news;
+	}
+	
+	/**
+	 * 删除永久素材
+	 * 
+	 * @param accesstoken
+	 * @param mediaId
+	 *            图文集合，数量不大于10
+	 * @return WxArticlesRespponseByMaterial 上传图文消息素材返回结果
+	 * @throws WexinReqException
+	 */
+	public static void deleteArticlesByMaterialNews(String accesstoken,String mediaId) throws WexinReqException {
+			if (accesstoken != null&&StringUtils.isNotEmpty(mediaId)) {
+				String requestUrl = material_del_news_url.replace("ACCESS_TOKEN", accesstoken);
+				JSONObject obj = new JSONObject();
+				obj.put("media_id", mediaId);
+				JSONObject result = WxstoreUtils.httpRequest(requestUrl, "POST", obj.toString());
+				if (result.has("errcode")&&result.getInt("errcode")!=0) {
+					logger.error("=====删除永久素材失败！errcode=" + result.getString("errcode") + ",errmsg = " + result.getString("errmsg")+"======");
+					throw new WexinReqException(result.getString("errcode"));
+				}else{
+					logger.info("=====删除永久素材成功=====");
+				}
+		}
+	}
+	//-- update-end--Author:gengjiajia  Date:2016-11-28 for:TASK #1583 【图文管理】重写管理永久素材的接口
 }

@@ -1,4 +1,4 @@
-﻿package org.jeewx.api.wxsendmsg.test;
+package org.jeewx.api.wxsendmsg.test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class MessageTest {
 	@Before
 	public void getToken() throws WexinReqException {
 		touser = "oA1Vct-_r1rAd5mcL3lEZKgcvGZY";
-		String appId = "?";
+		String appId = "wx6fdc3953994264a6";
 		String appSecret = "?";
 		AccessToken token = new AccessToken(appId, appSecret);
 
